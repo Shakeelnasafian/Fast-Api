@@ -66,3 +66,4 @@ test-results/
 # dotenv environment variables
 .env
 .env.*
+!.env.example
