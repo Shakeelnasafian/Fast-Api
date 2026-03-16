@@ -2,18 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Carsharing: Search Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Sharing Search Results</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
-    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">Search Results</h1>
-        <p class="text-gray-600 mb-4">We found the following matching cars:</p>
-        <ul class="list-disc list-inside space-y-2 text-gray-700">
+<body class="min-h-screen bg-slate-950 px-6 py-10 text-slate-100">
+    <main class="mx-auto max-w-5xl space-y-8">
+        <header class="flex flex-col gap-4 rounded-3xl border border-slate-800 bg-slate-900 p-8 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-sm uppercase tracking-[0.25em] text-cyan-300">Search results</p>
+                <h1 class="text-3xl font-semibold text-white">Matching fleet inventory</h1>
+                <p class="mt-2 text-sm text-slate-400">
+                    Filters: minimum {{ selected_doors }} doors, size {{ selected_size }}
+                </p>
+            </div>
+            <a
+                href="/"
+                class="inline-flex items-center justify-center rounded-xl border border-slate-700 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-cyan-400 hover:text-white"
+            >
+                Back to dashboard
+            </a>
+        </header>
+
+        <section class="grid gap-4 md:grid-cols-2">
             {% for car in cars %}
-            <li>{{ car }}</li>
+            <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">Car #{{ car.id }}</h2>
+                    <span class="rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-medium uppercase tracking-wide text-cyan-300">
+                        Ready
+                    </span>
+                </div>
+                <dl class="grid gap-3 text-sm text-slate-300">
+                    <div class="flex justify-between gap-4">
+                        <dt>Transmission</dt>
+                        <dd class="font-medium text-slate-100">{{ car.transmission }}</dd>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <dt>Fuel</dt>
+                        <dd class="font-medium text-slate-100">{{ car.fuel }}</dd>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <dt>Doors</dt>
+                        <dd class="font-medium text-slate-100">{{ car.doors }}</dd>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <dt>Size</dt>
+                        <dd class="font-medium text-slate-100">{{ car.size }}</dd>
+                    </div>
+                </dl>
+            </article>
+            {% else %}
+            <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/70 p-8 text-slate-300">
+                No cars matched the selected filters.
+            </div>
             {% endfor %}
-        </ul>
-    </div>
+        </section>
+    </main>
 </body>
 </html>

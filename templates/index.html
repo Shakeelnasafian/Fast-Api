@@ -1,54 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Carsharing Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Sharing Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+    <main class="mx-auto flex min-h-screen max-w-6xl flex-col gap-10 px-6 py-10">
+        <section class="grid gap-8 rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="space-y-6">
+                <p class="text-sm uppercase tracking-[0.3em] text-cyan-300">Fleet Operations</p>
+                <h1 class="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+                    Production-ready demo for browsing and filtering a shared car fleet.
+                </h1>
+                <p class="max-w-2xl text-base text-slate-300 sm:text-lg">
+                    This FastAPI service exposes a JSON API and a lightweight web interface over the same data.
+                </p>
+            </div>
 
-<body class="bg-gray-100 min-h-screen">
-    <!-- Top search bar stripe -->
-    <div class="bg-white shadow-md px-6 py-4 flex flex-wrap items-center justify-between">
-        <form action="search" method="post" class="flex flex-wrap gap-4 w-full">
-            <div class="basis-1/2">
-                <label for="doors" class="sr-only">Number of doors</label>
-                <input type="number" id="doors" name="doors" min="1" max="5" required placeholder="Doors"
-                    class="border border-gray-300 w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div class="basis-1/5">
-                <label for="size" class="sr-only">Size</label>
-                <select id="size" name="size" required
-                    class="border border-gray-300 w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="s" selected>Small</option>
-                    <option value="m">Medium</option>
-                    <option value="l">Large</option>
-                </select>
-            </div>
-            <div class="basis-1/5">
-                <button type="submit"
-                    class="w-full bg-blue-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                    Search
+            <form action="/search" method="post" class="space-y-5 rounded-2xl border border-slate-800 bg-slate-950/70 p-6">
+                <div>
+                    <label for="doors" class="mb-2 block text-sm font-medium text-slate-300">Minimum doors</label>
+                    <input
+                        type="number"
+                        id="doors"
+                        name="doors"
+                        min="2"
+                        max="7"
+                        value="4"
+                        required
+                        class="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400"
+                    >
+                </div>
+                <div>
+                    <label for="size" class="mb-2 block text-sm font-medium text-slate-300">Vehicle size</label>
+                    <select
+                        id="size"
+                        name="size"
+                        required
+                        class="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400"
+                    >
+                        <option value="s">Small</option>
+                        <option value="m" selected>Medium</option>
+                        <option value="l">Large</option>
+                    </select>
+                </div>
+                <button
+                    type="submit"
+                    class="w-full rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
+                >
+                    Search fleet
                 </button>
+            </form>
+        </section>
+
+        <section class="space-y-4">
+            <div class="flex items-end justify-between gap-4">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.25em] text-slate-400">Available cars</p>
+                    <h2 class="text-2xl font-semibold text-white">Current fleet snapshot</h2>
+                </div>
+                <p class="text-sm text-slate-400">{{ cars|length }} cars loaded</p>
             </div>
-        </form>
-    </div>
 
-    <!-- Main content section below the stripe -->
-    <div class="p-6 max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Welcome to the Car Sharing Service</h1>
-        <p class="text-gray-600 mb-6">Here you can browse the available cars matching your preferences.</p>
-
-        <!-- Example list placeholder -->
-        <ul class="space-y-4">
-            {% for car in cars %}
-            <li class="bg-white p-4 rounded-md shadow flex justify-between items-center">
-                <span>🚗 {{ car.transmission }} - {{ car.doors }} doors - {{ car.size }} - {{ car.fuel }}</span>
-                <span class="text-sm text-gray-500">Available</span>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {% for car in cars %}
+                <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                    <div class="mb-4 flex items-center justify-between">
+                        <p class="text-lg font-semibold text-white">Car #{{ car.id }}</p>
+                        <span class="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium uppercase tracking-wide text-emerald-300">
+                            Available
+                        </span>
+                    </div>
+                    <dl class="space-y-2 text-sm text-slate-300">
+                        <div class="flex justify-between gap-4">
+                            <dt>Transmission</dt>
+                            <dd class="font-medium text-slate-100">{{ car.transmission }}</dd>
+                        </div>
+                        <div class="flex justify-between gap-4">
+                            <dt>Fuel</dt>
+                            <dd class="font-medium text-slate-100">{{ car.fuel }}</dd>
+                        </div>
+                        <div class="flex justify-between gap-4">
+                            <dt>Doors</dt>
+                            <dd class="font-medium text-slate-100">{{ car.doors }}</dd>
+                        </div>
+                        <div class="flex justify-between gap-4">
+                            <dt>Size</dt>
+                            <dd class="font-medium text-slate-100">{{ car.size }}</dd>
+                        </div>
+                    </dl>
+                </article>
+                {% else %}
+                <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 p-8 text-slate-300">
+                    No cars are available in the current fleet.
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
 </body>
-
 </html>
